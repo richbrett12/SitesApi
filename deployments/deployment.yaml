@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sites-api
+  namespace: camping
+spec:
+  selector:
+    matchLabels:
+      app: sites-api
+  template:
+    metadata:
+      labels:
+        app: sites-api
+    spec:
+      containers:
+      - name: sites-api
+        image: jeffrygonzalez/camping-sites:v0.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        env:
+          - name: SitesDatabase__ConnectionString
+            value: mongodb://admin:TokyoJoe138!@mongo-mongodb.data.svc.cluster.local:27017/?authSource=admin
+          - name: SitesDatabase__DatabaseName
+            value: sites_db
+          - name: SitesDatabase__SitesCollectionName
+            value: sites
+        ports:
+        - containerPort: 80

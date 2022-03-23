@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sites-api-ingress
+  namespace: camping
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+  labels:
+    name: sites-api-ingress
+spec:
+  rules:
+  - host: api.camping-galaxy.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/campsites(/|$)(.*)"
+        backend:
+          service:
+            name: sites-api-service
+            port: 
+              number: 80
